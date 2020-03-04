@@ -1,0 +1,40 @@
+```{r}
+# Part 1:
+
+# n = # of trials, x = # of successes (DO or prep. dative)
+
+# xpd refers to prepositional dative
+# xdo refers to double object
+
+xpd <- 501
+xdo <- 1859
+n <- xpd + xdo
+binom.test(xpd,n,p=0.5)
+binom.test(xdo,n,p=0.5)
+# when we see a p value: if p value is smaller than .05, then reject the null hypothesis
+# Confidence Interval (CI) means, if real prob is in this range, then they are not equal
+# So, we know that both xpd and xdo are not equally probable
+```
+
+```{r}
+ptb = read.table('http://wellformedness.com/courses/LING82100/Data/PTB.tsv', header = TRUE, comment.char = '#')
+
+# Wins of each:
+Stanford.correct <- ptb$gold.tag == ptb$Stanford.tag
+NLP4J.correct <- ptb$gold.tag == ptb$NLP4J.tag
+
+# Wins of Stanford over NLP4J
+x1 <- sum(Stanford.correct & !NLP4J.correct)
+x1
+
+# Wins of NLP4J over Stanford
+x2 <- sum(NLP4J.correct & !Stanford.correct)
+x2
+
+# Binomial test, per the HW instructions:
+binom.test(min(x1, x2), x1 + x2, p = 0.5)
+
+# McNemar test!
+m1 <- mcnemar.test(Stanford.correct, NLP4J.correct)
+m1
+```
